@@ -30,9 +30,11 @@ public class Commands implements Listener {
 				String cmdType = event.getMessage().split(" ")[1];
 				if (cmdType.equalsIgnoreCase("play")) {
 					// Queue the player
+					
 				}
 				if (cmdType.equalsIgnoreCase("leave")) {
 					// Unqueue the player
+					
 				}
 
 			} else {
