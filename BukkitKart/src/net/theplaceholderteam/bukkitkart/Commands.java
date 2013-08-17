@@ -1,6 +1,7 @@
-package net.theplaceholderteam.bukkitkart.structure;
+package net.theplaceholderteam.bukkitkart;
 
-import net.theplaceholderteam.bukkitkart.BukkitKart;
+import net.theplaceholderteam.bukkitkart.structure.ConfigManager;
+import net.theplaceholderteam.bukkitkart.structure.QueueManager;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -38,11 +39,28 @@ public class Commands implements Listener {
 					// Unqueue the player
 					qManager.handleQueueLeaveReq(p);
 				}
+				if (cmdType.equalsIgnoreCase("help")) {
+					// Help command
+					helpCommand(p);
+				}
+				if (cmdType.equalsIgnoreCase("build")) {
+					// Toggles build mode for a certain track
+				}
 			} else {
-				p.sendMessage(ChatColor.DARK_RED
-						+ "You used this command incorrectly! Try again.");
+				helpCommand(p);
 			}
 		}
+	}
+
+	public void helpCommand(Player p) {
+		p.sendMessage(ChatColor.GRAY + "--- " + ChatColor.RED
+				+ "BukkitKart Help" + ChatColor.GRAY + " ---");
+		p.sendMessage(ChatColor.GRAY + "/" + cfgManager.getCmdTag()
+				+ " play - Use this command to play BukkitKart!");
+		p.sendMessage(ChatColor.GRAY
+				+ "/"
+				+ cfgManager.getCmdTag()
+				+ " leave - Use this command if you don't want to play anymore!");
 	}
 
 }
