@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import net.theplaceholderteam.bukkitkart.structure.Commands;
 import net.theplaceholderteam.bukkitkart.structure.ConfigManager;
+import net.theplaceholderteam.bukkitkart.structure.QueueManager;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,6 +16,7 @@ public class BukkitKart extends JavaPlugin {
 	public static final String TITLE = "BukkitKart", VERSION = "0.1a";
 	
 	ConfigManager cfgManager;
+	QueueManager qManager;
 	
 	Commands cmds;
 	
@@ -24,6 +26,7 @@ public class BukkitKart extends JavaPlugin {
 		
 		// Initialize objects needed
 		cfgManager = new ConfigManager();
+		qManager = new QueueManager(this);
 		
 		// Register listeners and cmdExecutors
 		cmds = new Commands(this);
@@ -43,6 +46,10 @@ public class BukkitKart extends JavaPlugin {
 	
 	public ConfigManager getCfgManager() {
 		return cfgManager;
+	}
+	
+	public QueueManager getQManager() {
+		return qManager;
 	}
 
 }

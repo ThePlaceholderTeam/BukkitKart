@@ -12,10 +12,12 @@ public class Commands implements Listener {
 
 	BukkitKart main;
 	ConfigManager cfgManager;
+	QueueManager qManager;
 
 	public Commands(BukkitKart main) {
 		this.main = main;
 		cfgManager = main.getCfgManager();
+		qManager = main.getQManager();
 		main.getServer().getPluginManager().registerEvents(this, main);
 	}
 
@@ -30,13 +32,12 @@ public class Commands implements Listener {
 				String cmdType = event.getMessage().split(" ")[1];
 				if (cmdType.equalsIgnoreCase("play")) {
 					// Queue the player
-					
+					qManager.handleQueueReq(p);
 				}
 				if (cmdType.equalsIgnoreCase("leave")) {
 					// Unqueue the player
-					
+					qManager.handleQueueLeaveReq(p);
 				}
-
 			} else {
 				p.sendMessage(ChatColor.DARK_RED
 						+ "You used this command incorrectly! Try again.");
