@@ -28,11 +28,12 @@ public class BuildManager implements Listener {
 
 	HashMap<String, String> builderList;
 
-	ArrayList<Track> tracks = new ArrayList<Track>();
+	ArrayList<Track> tracks;
 
 	public BuildManager(BukkitKart main) {
 		main.getServer().getPluginManager().registerEvents(this, main);
 		builderList = new HashMap<String, String>();
+		tracks = new ArrayList<Track>();
 		checkDirs();
 		loadTracks();
 	}
@@ -46,19 +47,26 @@ public class BuildManager implements Listener {
 			if (b.getType() == Material.WOOL) {
 				Wool wool = new Wool(b.getType(), b.getData());
 				if (wool.getColor() == DyeColor.BLACK) {
-					t.getFinishLine().remove(b.getLocation());
+					ArrayList<Location> temp = t.getFinishLine();
+					temp.remove(b.getLocation());
+					t.setFinishLine(temp);
 					t.saveTrack();
 				}
 				if (wool.getColor() == DyeColor.WHITE) {
-					t.getStartLine().remove(b.getLocation());
+					ArrayList<Location> temp = t.getStartLine();
+					temp.remove(b.getLocation());
+					t.setStartLine(temp);
+					t.saveTrack();
 					t.saveTrack();
 				}
 			}
 			if (b.getType() == Material.LAPIS_BLOCK) {
-				t.getCheckpoints().remove(b.getLocation());
+				ArrayList<Location> temp = t.getCheckpoints();
+				temp.remove(b.getLocation());
+				t.setCheckpoints(temp);
 				t.saveTrack();
 			}
-			reloadTracks();
+			t.reloadTrack();
 		} else {
 			for (Track t : tracks) {
 				for (Location l : t.getCheckpoints()) {
@@ -86,6 +94,7 @@ public class BuildManager implements Listener {
 	// Handles the saving of blocks
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
+		System.out.println(tracks);
 		Block b = event.getBlock();
 		Player p = event.getPlayer();
 		if (builderList.containsKey(p.getName())) {
@@ -111,7 +120,7 @@ public class BuildManager implements Listener {
 				t.setCheckpoints(temp);
 				t.saveTrack();
 			}
-			reloadTracks();
+			t.reloadTrack();
 		}
 	}
 

@@ -45,21 +45,18 @@ public class Track {
 			String checkpointsStr = "";
 			props.setProperty("trackName", trackName);
 			for (Location loc : startLine) {
-				System.out.println(loc.toString());
 				startLineStr = startLineStr + loc.getWorld().getName() + ":"
 						+ String.valueOf(loc.getBlockX()) + ":"
 						+ String.valueOf(loc.getBlockY()) + ":"
 						+ String.valueOf(loc.getBlockZ()) + "|";
 			}
 			for (Location loc : finishLine) {
-				System.out.println(loc.toString());
 				finishLineStr = finishLineStr + loc.getWorld().getName() + ":"
 						+ String.valueOf(loc.getBlockX()) + ":"
 						+ String.valueOf(loc.getBlockY()) + ":"
 						+ String.valueOf(loc.getBlockZ()) + "|";
 			}
 			for (Location loc : checkpoints) {
-				System.out.println(loc.toString());
 				checkpointsStr = checkpointsStr + loc.getWorld().getName()
 						+ ":" + String.valueOf(loc.getBlockX()) + ":"
 						+ String.valueOf(loc.getBlockY()) + ":"
@@ -88,9 +85,9 @@ public class Track {
 			String startLineStr = props.getProperty("startLine");
 			String finishLineStr = props.getProperty("finishLine");
 			String checkpointsStr = props.getProperty("checkpoints");
-			ArrayList<Location> startLine2 = new ArrayList<Location>();
-			ArrayList<Location> finishLine2 = new ArrayList<Location>();
-			ArrayList<Location> checkpoints2 = new ArrayList<Location>();
+			ArrayList<Location> startLine2 = startLine;
+			ArrayList<Location> finishLine2 = finishLine;
+			ArrayList<Location> checkpoints2 = checkpoints;
 			if (!startLineStr.equalsIgnoreCase("")) {
 
 				String[] startLineStrArr = startLineStr.split("|");
