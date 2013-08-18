@@ -34,6 +34,7 @@ public class BuildManager implements Listener {
 		main.getServer().getPluginManager().registerEvents(this, main);
 		builderList = new HashMap<String, String>();
 		checkDirs();
+		loadTracks();
 	}
 
 	@EventHandler
@@ -42,8 +43,8 @@ public class BuildManager implements Listener {
 		Player p = event.getPlayer();
 		if (builderList.containsKey(p.getName())) {
 			Track t = getTrack(builderList.get(p.getName()));
-			if (b.getType() == Material.WOOL && b instanceof Wool) {
-				Wool wool = (Wool) b;
+			if (b.getType() == Material.WOOL) {
+				Wool wool = new Wool(b.getType(), b.getData());
 				if (wool.getColor() == DyeColor.BLACK) {
 					t.getFinishLine().remove(b.getLocation());
 					t.saveTrack();
@@ -57,7 +58,7 @@ public class BuildManager implements Listener {
 				t.getCheckpoints().remove(b.getLocation());
 				t.saveTrack();
 			}
-			loadTracks();
+			reloadTracks();
 		} else {
 			for (Track t : tracks) {
 				for (Location l : t.getCheckpoints()) {
@@ -89,8 +90,8 @@ public class BuildManager implements Listener {
 		Player p = event.getPlayer();
 		if (builderList.containsKey(p.getName())) {
 			Track t = getTrack(builderList.get(p.getName()));
-			if (b.getType() == Material.WOOL && b instanceof Wool) {
-				Wool wool = (Wool) b;
+			if (b.getType() == Material.WOOL) {
+				Wool wool = new Wool(b.getType(), b.getData());
 				if (wool.getColor() == DyeColor.BLACK) {
 					t.getFinishLine().add(b.getLocation());
 					t.saveTrack();
@@ -104,7 +105,7 @@ public class BuildManager implements Listener {
 				t.getCheckpoints().add(b.getLocation());
 				t.saveTrack();
 			}
-			loadTracks();
+			reloadTracks();
 		}
 	}
 
@@ -200,6 +201,12 @@ public class BuildManager implements Listener {
 	public void checkDirs() {
 		if (!BukkitKart.trackDir.exists()) {
 			BukkitKart.trackDir.mkdir();
+		}
+	}
+	
+	public void reloadTracks() {
+		for (Track t : tracks) {
+			t.reloadTrack();
 		}
 	}
 

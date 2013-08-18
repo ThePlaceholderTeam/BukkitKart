@@ -45,20 +45,20 @@ public class Track {
 			String checkpointsStr = "";
 			props.setProperty("trackName", trackName);
 			for (Location loc : startLine) {
-				startLineStr = startLineStr + "|"
+				startLineStr = startLineStr + loc.getWorld().getName() + ":"
 						+ String.valueOf(loc.getBlockX()) + ":"
 						+ String.valueOf(loc.getBlockY()) + ":"
 						+ String.valueOf(loc.getBlockZ()) + "|";
 			}
 			for (Location loc : finishLine) {
-				finishLineStr = finishLineStr + "|"
+				finishLineStr = finishLineStr + loc.getWorld().getName() + ":"
 						+ String.valueOf(loc.getBlockX()) + ":"
 						+ String.valueOf(loc.getBlockY()) + ":"
 						+ String.valueOf(loc.getBlockZ()) + "|";
 			}
 			for (Location loc : checkpoints) {
-				checkpointsStr = checkpointsStr + "|"
-						+ String.valueOf(loc.getBlockX()) + ":"
+				checkpointsStr = checkpointsStr + loc.getWorld().getName()
+						+ ":" + String.valueOf(loc.getBlockX()) + ":"
 						+ String.valueOf(loc.getBlockY()) + ":"
 						+ String.valueOf(loc.getBlockZ()) + "|";
 			}
@@ -85,35 +85,51 @@ public class Track {
 			String startLineStr = props.getProperty("startLine");
 			String finishLineStr = props.getProperty("finishLine");
 			String checkpointsStr = props.getProperty("checkpoints");
-			String[] startLineStrArr = startLineStr.split("|");
-			String[] finishLineStrArr = finishLineStr.split("|");
-			String[] checkpointsStrArr = checkpointsStr.split("|");
 			ArrayList<Location> startLine2 = new ArrayList<Location>();
 			ArrayList<Location> finishLine2 = new ArrayList<Location>();
 			ArrayList<Location> checkpoints2 = new ArrayList<Location>();
-			for (int i = 0; i < startLineStrArr.length; i++) {
-				String world = startLineStrArr[i].split(":")[0];
-				int x = Integer.valueOf(startLineStrArr[i].split(":")[1]);
-				int y = Integer.valueOf(startLineStrArr[i].split(":")[2]);
-				int z = Integer.valueOf(startLineStrArr[i].split(":")[3]);
-				Location loc = new Location(Bukkit.getWorld(world), x, y, z);
-				startLine2.add(loc);
+			if (!startLineStr.equalsIgnoreCase("")) {
+
+				String[] startLineStrArr = startLineStr.split("|");
+				for (int i = 0; i <= startLineStrArr.length; i++) {
+					String world = startLineStrArr[i].split(":")[0];
+					if (startLineStrArr[i].split(":").length < 4) {
+						break;
+					}
+					int x = Integer.valueOf(startLineStrArr[i].split(":")[1]);
+					int y = Integer.valueOf(startLineStrArr[i].split(":")[2]);
+					int z = Integer.valueOf(startLineStrArr[i].split(":")[3]);
+					Location loc = new Location(Bukkit.getWorld(world), x, y, z);
+					startLine2.add(loc);
+				}
 			}
-			for (int i = 0; i < finishLineStrArr.length; i++) {
-				String world = finishLineStrArr[i].split(":")[0];
-				int x = Integer.valueOf(finishLineStrArr[i].split(":")[1]);
-				int y = Integer.valueOf(finishLineStrArr[i].split(":")[2]);
-				int z = Integer.valueOf(finishLineStrArr[i].split(":")[3]);
-				Location loc = new Location(Bukkit.getWorld(world), x, y, z);
-				finishLine2.add(loc);
+			if (!finishLineStr.equalsIgnoreCase("")) {
+				String[] finishLineStrArr = finishLineStr.split("|");
+				for (int i = 0; i <= finishLineStrArr.length; i++) {
+					if (finishLineStrArr[i].split(":").length < 4) {
+						break;
+					}
+					String world = finishLineStrArr[i].split(":")[0];
+					int x = Integer.valueOf(finishLineStrArr[i].split(":")[1]);
+					int y = Integer.valueOf(finishLineStrArr[i].split(":")[2]);
+					int z = Integer.valueOf(finishLineStrArr[i].split(":")[3]);
+					Location loc = new Location(Bukkit.getWorld(world), x, y, z);
+					finishLine2.add(loc);
+				}
 			}
-			for (int i = 0; i < checkpointsStrArr.length; i++) {
-				String world = checkpointsStrArr[i].split(":")[0];
-				int x = Integer.valueOf(checkpointsStrArr[i].split(":")[1]);
-				int y = Integer.valueOf(checkpointsStrArr[i].split(":")[2]);
-				int z = Integer.valueOf(checkpointsStrArr[i].split(":")[3]);
-				Location loc = new Location(Bukkit.getWorld(world), x, y, z);
-				checkpoints2.add(loc);
+			if (!checkpointsStr.equalsIgnoreCase("")) {
+				String[] checkpointsStrArr = checkpointsStr.split("|");
+				for (int i = 0; i <= checkpointsStrArr.length; i++) {
+					if (checkpointsStrArr[i].split(":").length < 4) {
+						break;
+					}
+					String world = checkpointsStrArr[i].split(":")[0];
+					int x = Integer.valueOf(checkpointsStrArr[i].split(":")[1]);
+					int y = Integer.valueOf(checkpointsStrArr[i].split(":")[2]);
+					int z = Integer.valueOf(checkpointsStrArr[i].split(":")[3]);
+					Location loc = new Location(Bukkit.getWorld(world), x, y, z);
+					checkpoints2.add(loc);
+				}
 			}
 			this.setStartLine(startLine2);
 			this.setFinishLine(finishLine2);
@@ -140,8 +156,12 @@ public class Track {
 			ArrayList<Location> finishLine2 = new ArrayList<Location>();
 			ArrayList<Location> checkpoints2 = new ArrayList<Location>();
 			if (!startLineStr.equalsIgnoreCase("")) {
+
 				String[] startLineStrArr = startLineStr.split("|");
-				for (int i = 0; i < startLineStrArr.length; i++) {
+				for (int i = 0; i <= startLineStrArr.length; i++) {
+					if (startLineStrArr[i].split(":").length < 4) {
+						break;
+					}
 					String world = startLineStrArr[i].split(":")[0];
 					int x = Integer.valueOf(startLineStrArr[i].split(":")[1]);
 					int y = Integer.valueOf(startLineStrArr[i].split(":")[2]);
@@ -152,7 +172,10 @@ public class Track {
 			}
 			if (!finishLineStr.equalsIgnoreCase("")) {
 				String[] finishLineStrArr = finishLineStr.split("|");
-				for (int i = 0; i < finishLineStrArr.length; i++) {
+				for (int i = 0; i <= finishLineStrArr.length; i++) {
+					if (finishLineStrArr[i].split(":").length < 4) {
+						break;
+					}
 					String world = finishLineStrArr[i].split(":")[0];
 					int x = Integer.valueOf(finishLineStrArr[i].split(":")[1]);
 					int y = Integer.valueOf(finishLineStrArr[i].split(":")[2]);
@@ -163,7 +186,10 @@ public class Track {
 			}
 			if (!checkpointsStr.equalsIgnoreCase("")) {
 				String[] checkpointsStrArr = checkpointsStr.split("|");
-				for (int i = 0; i < checkpointsStrArr.length; i++) {
+				for (int i = 0; i <= checkpointsStrArr.length; i++) {
+					if (checkpointsStrArr[i].split(":").length < 4) {
+						break;
+					}
 					String world = checkpointsStrArr[i].split(":")[0];
 					int x = Integer.valueOf(checkpointsStrArr[i].split(":")[1]);
 					int y = Integer.valueOf(checkpointsStrArr[i].split(":")[2]);
