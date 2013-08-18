@@ -45,18 +45,21 @@ public class Track {
 			String checkpointsStr = "";
 			props.setProperty("trackName", trackName);
 			for (Location loc : startLine) {
+				System.out.println(loc.toString());
 				startLineStr = startLineStr + loc.getWorld().getName() + ":"
 						+ String.valueOf(loc.getBlockX()) + ":"
 						+ String.valueOf(loc.getBlockY()) + ":"
 						+ String.valueOf(loc.getBlockZ()) + "|";
 			}
 			for (Location loc : finishLine) {
+				System.out.println(loc.toString());
 				finishLineStr = finishLineStr + loc.getWorld().getName() + ":"
 						+ String.valueOf(loc.getBlockX()) + ":"
 						+ String.valueOf(loc.getBlockY()) + ":"
 						+ String.valueOf(loc.getBlockZ()) + "|";
 			}
 			for (Location loc : checkpoints) {
+				System.out.println(loc.toString());
 				checkpointsStr = checkpointsStr + loc.getWorld().getName()
 						+ ":" + String.valueOf(loc.getBlockX()) + ":"
 						+ String.valueOf(loc.getBlockY()) + ":"
@@ -91,7 +94,7 @@ public class Track {
 			if (!startLineStr.equalsIgnoreCase("")) {
 
 				String[] startLineStrArr = startLineStr.split("|");
-				for (int i = 0; i <= startLineStrArr.length; i++) {
+				for (int i = 0; i < startLineStrArr.length; i++) {
 					String world = startLineStrArr[i].split(":")[0];
 					if (startLineStrArr[i].split(":").length < 4) {
 						break;
@@ -105,7 +108,7 @@ public class Track {
 			}
 			if (!finishLineStr.equalsIgnoreCase("")) {
 				String[] finishLineStrArr = finishLineStr.split("|");
-				for (int i = 0; i <= finishLineStrArr.length; i++) {
+				for (int i = 0; i < finishLineStrArr.length; i++) {
 					if (finishLineStrArr[i].split(":").length < 4) {
 						break;
 					}
@@ -119,7 +122,7 @@ public class Track {
 			}
 			if (!checkpointsStr.equalsIgnoreCase("")) {
 				String[] checkpointsStrArr = checkpointsStr.split("|");
-				for (int i = 0; i <= checkpointsStrArr.length; i++) {
+				for (int i = 0; i < checkpointsStrArr.length; i++) {
 					if (checkpointsStrArr[i].split(":").length < 4) {
 						break;
 					}
@@ -158,7 +161,7 @@ public class Track {
 			if (!startLineStr.equalsIgnoreCase("")) {
 
 				String[] startLineStrArr = startLineStr.split("|");
-				for (int i = 0; i <= startLineStrArr.length; i++) {
+				for (int i = 0; i < startLineStrArr.length; i++) {
 					if (startLineStrArr[i].split(":").length < 4) {
 						break;
 					}
@@ -172,7 +175,7 @@ public class Track {
 			}
 			if (!finishLineStr.equalsIgnoreCase("")) {
 				String[] finishLineStrArr = finishLineStr.split("|");
-				for (int i = 0; i <= finishLineStrArr.length; i++) {
+				for (int i = 0; i < finishLineStrArr.length; i++) {
 					if (finishLineStrArr[i].split(":").length < 4) {
 						break;
 					}
@@ -186,7 +189,7 @@ public class Track {
 			}
 			if (!checkpointsStr.equalsIgnoreCase("")) {
 				String[] checkpointsStrArr = checkpointsStr.split("|");
-				for (int i = 0; i <= checkpointsStrArr.length; i++) {
+				for (int i = 0; i < checkpointsStrArr.length; i++) {
 					if (checkpointsStrArr[i].split(":").length < 4) {
 						break;
 					}

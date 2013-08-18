@@ -93,16 +93,22 @@ public class BuildManager implements Listener {
 			if (b.getType() == Material.WOOL) {
 				Wool wool = new Wool(b.getType(), b.getData());
 				if (wool.getColor() == DyeColor.BLACK) {
-					t.getFinishLine().add(b.getLocation());
+					ArrayList<Location> temp = t.getFinishLine();
+					temp.add(b.getLocation());
+					t.setFinishLine(temp);
 					t.saveTrack();
 				}
 				if (wool.getColor() == DyeColor.WHITE) {
-					t.getStartLine().add(b.getLocation());
+					ArrayList<Location> temp = t.getStartLine();
+					temp.add(b.getLocation());
+					t.setStartLine(temp);
 					t.saveTrack();
 				}
 			}
 			if (b.getType() == Material.LAPIS_BLOCK) {
-				t.getCheckpoints().add(b.getLocation());
+				ArrayList<Location> temp = t.getCheckpoints();
+				temp.add(b.getLocation());
+				t.setCheckpoints(temp);
 				t.saveTrack();
 			}
 			reloadTracks();
