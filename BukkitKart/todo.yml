@@ -2,6 +2,8 @@ To-do list
 
 FEATURES
 * Some kind of AI to race against singleplayer (that would be cool)
+* We need a cool mystery box display - I was thinking the block could be a piece of alternating rainbow wool - I.E. run a timer to change the block to different types of wool (would be a cool effect) - and we would
+check the player's distance (if they get within 1 block) the mystery box would be activated and the player would get whatever random item/power up
 
 ---
 
@@ -11,6 +13,15 @@ BUGS
 ---
 
 NOTES
-* 
+* How the structure and track system works:
+  - So far the queue system has a command that allows players to queue into a game - it'll be easy to just stick in a line of code that does all the TP'ing and such for the players in and out of the tracks
+  i.e a gameStart() method and a gameStop() method
+  - I created a track system that will store the tracks Location[] arrays with Properties, it'll be able to save and load tracks flatfile
+  - I'm starting a track building mode where server owners/admins/mods can easily create new tracks (with a toggle cmd). They can switch which track they are 'building', it'll automatically create a new track if someone 
+  starts building a track that can't be found - not sure if that's a good idea or not. I'm also uncertain whether or not Locations should be stored or Blocks
+  - I'm also unsure of how the build mode will work in specifics - should it be toggling different block types? I.e. a player types /cmd startline and every block the build from henceforth will be startLine blocks? Or
+  should we pre-define what type of block is what? I.e red wool will always be the startLine block, etc. I'm thinking that on toggling build mode, the player's hotbar is switched to a list of blocks with custom ItemMeta
+  that will describe what the block is
+  - There are also tons of code redundancies I'll sweep through and fix when I have the time to
 
 ---

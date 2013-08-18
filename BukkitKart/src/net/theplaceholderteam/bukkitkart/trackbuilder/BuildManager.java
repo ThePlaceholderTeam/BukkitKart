@@ -17,6 +17,7 @@ public class BuildManager implements Listener {
 	public BuildManager(BukkitKart main) {
 		main.getServer().getPluginManager().registerEvents(this, main);
 		builderList = new HashMap<String, String>();
+		checkDirs();
 	}
 
 	@EventHandler
@@ -26,10 +27,16 @@ public class BuildManager implements Listener {
 
 	public void handleBuildReq(Player p, String trackName) {
 		if (builderList.containsKey(p.getName())) {
-			p.sendMessage(ChatColor.GREEN + "You are no longer in build more for track: " + builderList.get(p.getName()) + ".");
+			p.sendMessage(ChatColor.GREEN + "You are no longer in build mode for track: " + builderList.get(p.getName()) + ".");
 			builderList.remove(p.getName());
 		}
 		
+	}
+	
+	public void checkDirs() {
+		if (!BukkitKart.trackDir.exists()) {
+			BukkitKart.trackDir.mkdir();
+		}
 	}
 
 }

@@ -44,7 +44,7 @@ public class Commands implements Listener {
 					helpCommand(p);
 				}
 				if (cmdType.equalsIgnoreCase("build")) {
-					// Toggles build mode for a certain track
+					// Toggles build mode for a certain track, requires two arguments
 				}
 			} else {
 				helpCommand(p);
