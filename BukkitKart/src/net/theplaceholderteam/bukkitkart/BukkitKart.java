@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class BukkitKart extends JavaPlugin {
 
 	public static final File trackDir = new File("plugins/BukkitKart/Tracks/");
+	public static final String trackDirStr = "plugins/BukkitKart/Tracks/";
 	public static final File mainDir = new File("plugins/BukkitKart/");
 	public static final File config = new File(
 			"plugins/BukkitKart/config.properties");

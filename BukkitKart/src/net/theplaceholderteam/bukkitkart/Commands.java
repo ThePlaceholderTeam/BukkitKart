@@ -28,12 +28,12 @@ public class Commands implements CommandExecutor {
 		p.sendMessage(ChatColor.GRAY + "--- " + ChatColor.RED
 				+ "BukkitKart Help" + ChatColor.GRAY + " ---");
 		p.sendMessage(ChatColor.GRAY + "/bukkitkart"
-				+ " play - Use this command to play BukkitKart!");
+				+ " play - Enter the BukkitKart queue");
 		p.sendMessage(ChatColor.GRAY
 				+ "/bukkitkart"
-				+ " leave - Use this command if you don't want to play anymore!");
+				+ " leave - Leave the BukkitKart queue");
 		p.sendMessage(ChatColor.GRAY
-				+ "/bukkitkart build [trackname] - Build a new track, or edit an old one!");
+				+ "/bukkitkart build [trackname] - Build or edit a track");
 	}
 
 	@Override

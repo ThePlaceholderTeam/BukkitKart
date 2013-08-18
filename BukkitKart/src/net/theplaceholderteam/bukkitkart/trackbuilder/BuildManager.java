@@ -9,16 +9,20 @@ import net.theplaceholderteam.bukkitkart.BukkitKart;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.Wool;
 
 public class BuildManager implements Listener {
 
@@ -33,8 +37,75 @@ public class BuildManager implements Listener {
 	}
 
 	@EventHandler
-	public void onBlockPlace(BlockPlaceEvent event) {
+	public void onBlockBreak(BlockBreakEvent event) {
+		Block b = event.getBlock();
+		Player p = event.getPlayer();
+		if (builderList.containsKey(p.getName())) {
+			Track t = getTrack(builderList.get(p.getName()));
+			if (b.getType() == Material.WOOL && b instanceof Wool) {
+				Wool wool = (Wool) b;
+				if (wool.getColor() == DyeColor.BLACK) {
+					t.getFinishLine().remove(b.getLocation());
+					t.saveTrack();
+				}
+				if (wool.getColor() == DyeColor.WHITE) {
+					t.getStartLine().remove(b.getLocation());
+					t.saveTrack();
+				}
+			}
+			if (b.getType() == Material.LAPIS_BLOCK) {
+				t.getCheckpoints().remove(b.getLocation());
+				t.saveTrack();
+			}
+			loadTracks();
+		} else {
+			for (Track t : tracks) {
+				for (Location l : t.getCheckpoints()) {
+					if (l.equals(b.getLocation())) {
+						event.setCancelled(true);
+						p.sendMessage(ChatColor.DARK_RED + "You must be in build mode!");
+					}
+				}
+				for (Location l : t.getFinishLine()) {
+					if (l.equals(b.getLocation())) {
+						event.setCancelled(true);
+						p.sendMessage(ChatColor.DARK_RED + "You must be in build mode!");
+					}
+				}
+				for (Location l : t.getStartLine()) {
+					if (l.equals(b.getLocation())) {
+						event.setCancelled(true);
+						p.sendMessage(ChatColor.DARK_RED + "You must be in build mode!");
+					}
+				}
+			}
+		}
+	}
 
+	// Handles the saving of blocks
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent event) {
+		Block b = event.getBlock();
+		Player p = event.getPlayer();
+		if (builderList.containsKey(p.getName())) {
+			Track t = getTrack(builderList.get(p.getName()));
+			if (b.getType() == Material.WOOL && b instanceof Wool) {
+				Wool wool = (Wool) b;
+				if (wool.getColor() == DyeColor.BLACK) {
+					t.getFinishLine().add(b.getLocation());
+					t.saveTrack();
+				}
+				if (wool.getColor() == DyeColor.WHITE) {
+					t.getStartLine().add(b.getLocation());
+					t.saveTrack();
+				}
+			}
+			if (b.getType() == Material.LAPIS_BLOCK) {
+				t.getCheckpoints().add(b.getLocation());
+				t.saveTrack();
+			}
+			loadTracks();
+		}
 	}
 
 	@EventHandler
@@ -63,7 +134,7 @@ public class BuildManager implements Listener {
 		if (builderList.containsKey(p.getName())) {
 			p.sendMessage(ChatColor.GREEN
 					+ "You are no longer in build mode for track: "
-					+ builderList.get(p.getName()) + ".");
+					+ builderList.get(p.getName()));
 			p.getInventory().clear();
 			p.setGameMode(GameMode.SURVIVAL);
 			builderList.remove(p.getName());
@@ -71,7 +142,9 @@ public class BuildManager implements Listener {
 		}
 		if (getTrack(trackName) == null) {
 			// Temporary nullness
-			Track t = new Track(trackName, null, null, null);
+			ArrayList<Location> temporary = new ArrayList<Location>();
+			Track t = new Track(trackName, temporary, temporary, temporary);
+			t.saveTrack();
 			tracks.add(t);
 		}
 		builderList.put(p.getName(), getTrack(trackName).getTrackName());
@@ -86,11 +159,12 @@ public class BuildManager implements Listener {
 		p.getInventory().setItem(7, new ItemStack(Material.AIR));
 		p.getInventory().setItem(8, new ItemStack(Material.AIR));
 		p.sendMessage(ChatColor.GREEN + "You are now in build mode for track: "
-				+ trackName + ".");
+				+ trackName);
 	}
 
 	public static final ItemStack getStartLineItem() {
-		ItemStack i = new ItemStack(Material.WOOL, 1, DyeColor.WHITE.getWoolData());
+		ItemStack i = new ItemStack(Material.WOOL, 1,
+				DyeColor.WHITE.getWoolData());
 		ItemMeta im = i.getItemMeta();
 		im.setDisplayName("Start Line");
 		i.setItemMeta(im);
@@ -98,7 +172,8 @@ public class BuildManager implements Listener {
 	}
 
 	public static final ItemStack getFinishLineItem() {
-		ItemStack i = new ItemStack(Material.WOOL, 1, DyeColor.BLACK.getWoolData());
+		ItemStack i = new ItemStack(Material.WOOL, 1,
+				DyeColor.BLACK.getWoolData());
 		ItemMeta im = i.getItemMeta();
 		im.setDisplayName("Finish Line");
 		i.setItemMeta(im);
