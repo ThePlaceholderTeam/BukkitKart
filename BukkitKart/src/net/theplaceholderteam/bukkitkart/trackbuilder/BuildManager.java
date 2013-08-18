@@ -67,6 +67,7 @@ public class BuildManager implements Listener {
 			p.getInventory().clear();
 			p.setGameMode(GameMode.SURVIVAL);
 			builderList.remove(p.getName());
+			return;
 		}
 		if (getTrack(trackName) == null) {
 			// Temporary nullness
@@ -89,7 +90,7 @@ public class BuildManager implements Listener {
 	}
 
 	public static final ItemStack getStartLineItem() {
-		ItemStack i = new ItemStack(Material.WOOL, DyeColor.WHITE.getWoolData());
+		ItemStack i = new ItemStack(Material.WOOL, 1, DyeColor.WHITE.getWoolData());
 		ItemMeta im = i.getItemMeta();
 		im.setDisplayName("Start Line");
 		i.setItemMeta(im);
@@ -97,7 +98,7 @@ public class BuildManager implements Listener {
 	}
 
 	public static final ItemStack getFinishLineItem() {
-		ItemStack i = new ItemStack(Material.WOOL, DyeColor.BLACK.getWoolData());
+		ItemStack i = new ItemStack(Material.WOOL, 1, DyeColor.BLACK.getWoolData());
 		ItemMeta im = i.getItemMeta();
 		im.setDisplayName("Finish Line");
 		i.setItemMeta(im);

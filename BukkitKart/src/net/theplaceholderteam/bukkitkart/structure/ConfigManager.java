@@ -11,6 +11,8 @@ public class ConfigManager {
 	
 	private String cmdTag;
 	
+	
+	// For now this doesn't actually do anything
 	public void checkConfig() {
 		
 		Properties props = new Properties();

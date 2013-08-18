@@ -5,12 +5,12 @@ import net.theplaceholderteam.bukkitkart.structure.QueueManager;
 import net.theplaceholderteam.bukkitkart.trackbuilder.BuildManager;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-public class Commands implements Listener {
+public class Commands implements CommandExecutor {
 
 	BukkitKart main;
 	ConfigManager cfgManager;
@@ -21,50 +21,56 @@ public class Commands implements Listener {
 		this.main = main;
 		cfgManager = main.getCfgManager();
 		qManager = main.getQManager();
-		buildManager= main.getBuildManager();
-		main.getServer().getPluginManager().registerEvents(this, main);
-	}
-
-	// Using listener instead of an executor so the command can be configurable
-	@EventHandler
-	public void onCommand(PlayerCommandPreprocessEvent event) {
-		Player p = event.getPlayer();
-		String cmd = event.getMessage().split(" ")[0];
-		if (cmd.equalsIgnoreCase("/" + cfgManager.getCmdTag())) {
-			// BukkitKart command
-			if (event.getMessage().split(" ").length == 2) {
-				String cmdType = event.getMessage().split(" ")[1];
-				if (cmdType.equalsIgnoreCase("play")) {
-					// Queue the player
-					qManager.handleQueueReq(p);
-				}
-				if (cmdType.equalsIgnoreCase("leave")) {
-					// Unqueue the player
-					qManager.handleQueueLeaveReq(p);
-				}
-				if (cmdType.equalsIgnoreCase("help")) {
-					// Help command
-					helpCommand(p);
-				}
-				if (cmdType.equalsIgnoreCase("build")) {
-					// Toggles build mode for a certain track, requires two arguments
-					
-				}
-			} else {
-				helpCommand(p);
-			}
-		}
+		buildManager = main.getBuildManager();
 	}
 
 	public void helpCommand(Player p) {
 		p.sendMessage(ChatColor.GRAY + "--- " + ChatColor.RED
 				+ "BukkitKart Help" + ChatColor.GRAY + " ---");
-		p.sendMessage(ChatColor.GRAY + "/" + cfgManager.getCmdTag()
+		p.sendMessage(ChatColor.GRAY + "/bukkitkart"
 				+ " play - Use this command to play BukkitKart!");
 		p.sendMessage(ChatColor.GRAY
-				+ "/"
-				+ cfgManager.getCmdTag()
+				+ "/bukkitkart"
 				+ " leave - Use this command if you don't want to play anymore!");
+		p.sendMessage(ChatColor.GRAY
+				+ "/bukkitkart build [trackname] - Build a new track, or edit an old one!");
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd,
+			String commandLabel, String[] args) {
+		if (sender instanceof Player) {
+			Player p = (Player) sender;
+			if (commandLabel.equalsIgnoreCase("bukkitkart")) {
+				if (args.length == 1) {
+					String cmdType = args[0];
+					if (cmdType.equalsIgnoreCase("play")) {
+						qManager.handleQueueReq(p);
+					}
+					if (cmdType.equalsIgnoreCase("leave")) {
+						qManager.handleQueueLeaveReq(p);
+					}
+					if (cmdType.equalsIgnoreCase("help")) {
+						helpCommand(p);
+					}
+					if (cmdType.equalsIgnoreCase("build")) {
+						buildManager.handleBuildReq(p, "");
+					}
+					return true;
+				} else if (args.length == 2) {
+					String cmdType = args[0];
+					String trackName = args[1];
+					if (cmdType.equalsIgnoreCase("build")) {
+						buildManager.handleBuildReq(p, trackName);
+					}
+					return true;
+				} else {
+					helpCommand(p);
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

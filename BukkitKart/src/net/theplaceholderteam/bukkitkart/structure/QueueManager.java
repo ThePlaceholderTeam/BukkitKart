@@ -43,7 +43,8 @@ public class QueueManager {
 			p.sendMessage(ChatColor.DARK_RED + "You are already in the queue!");
 			return;
 		}
-
+		
+		p.sendMessage(ChatColor.GREEN + "You have been added to the queue!");
 		waitingQueue.add(p.getName());
 	}
 

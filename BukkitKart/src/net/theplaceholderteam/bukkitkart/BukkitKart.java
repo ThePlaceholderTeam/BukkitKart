@@ -35,6 +35,7 @@ public class BukkitKart extends JavaPlugin {
 
 		// Register listeners and cmdExecutors
 		cmds = new Commands(this);
+		getCommand("bukkitkart").setExecutor(cmds);
 
 		// Perform setup tasks
 		cfgManager.checkConfig();
