@@ -1,6 +1,7 @@
 To-do list
 
 FEATURES
+
 * Some kind of AI to race against singleplayer (that would be cool)
 * We need a cool mystery box display - I was thinking the block could be a piece of alternating rainbow wool - I.E. run a timer to change the block to different types of wool (would be a cool effect) - and we would
 check the player's distance (if they get within 1 block) the mystery box would be activated and the player would get whatever random item/power up
@@ -8,11 +9,13 @@ check the player's distance (if they get within 1 block) the mystery box would b
 ---
 
 BUGS
+
 * Add a dump method where it teleports all players to spawn or something/exits all games onDisable() to prevent exploits
 
 ---
 
 NOTES
+
 * How the structure and track system works:
   - So far the queue system has a command that allows players to queue into a game - it'll be easy to just stick in a line of code that does all the TP'ing and such for the players in and out of the tracks
   i.e a gameStart() method and a gameStop() method
@@ -23,5 +26,8 @@ NOTES
   should we pre-define what type of block is what? I.e red wool will always be the startLine block, etc. I'm thinking that on toggling build mode, the player's hotbar is switched to a list of blocks with custom ItemMeta
   that will describe what the block is
   - There are also tons of code redundancies I'll sweep through and fix when I have the time to
+
+* How track builder should work:
+  - When toggled on - track building will reset the player's little hot bar with some custom blocks, which they can place to their heart's content and such. It'll save to a track file, which can later be loaded
 
 ---

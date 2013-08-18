@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import net.theplaceholderteam.bukkitkart.BukkitKart;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 public class Track {
@@ -16,12 +18,12 @@ public class Track {
 
 	private String trackName;
 
-	private Location[] startLine;
-	private Location[] finishLine;
-	private Location[] checkpoints;
+	private ArrayList<Location> startLine;
+	private ArrayList<Location> finishLine;
+	private ArrayList<Location> checkpoints;
 
-	public Track(String trackName, Location[] startLine, Location[] finishLine,
-			Location[] checkpoints) {
+	public Track(String trackName, ArrayList<Location> startLine,
+			ArrayList<Location> finishLine, ArrayList<Location> checkpoints) {
 		this.setTrackName(trackName);
 		this.startLine = startLine;
 		this.finishLine = finishLine;
@@ -42,6 +44,7 @@ public class Track {
 			String startLineStr = "";
 			String finishLineStr = "";
 			String checkpointsStr = "";
+			props.setProperty("trackName", trackName);
 			for (Location loc : startLine) {
 				startLineStr = startLineStr + "|"
 						+ String.valueOf(loc.getBlockX()) + ":"
@@ -71,31 +74,130 @@ public class Track {
 		}
 	}
 
-	public void loadTrack() {
+	public void reloadTrack() {
+
+		Properties props = new Properties();
+		if (!trackFile.exists()) {
+			return;
+		}
+		try {
+			FileInputStream fis = new FileInputStream(trackFile);
+			props.load(fis);
+			String startLineStr = props.getProperty("startLine");
+			String finishLineStr = props.getProperty("finishLine");
+			String checkpointsStr = props.getProperty("checkpointss");
+			String[] startLineStrArr = startLineStr.split("|");
+			String[] finishLineStrArr = finishLineStr.split("|");
+			String[] checkpointsStrArr = checkpointsStr.split("|");
+			ArrayList<Location> startLine2 = new ArrayList<Location>();
+			ArrayList<Location> finishLine2 = new ArrayList<Location>();
+			ArrayList<Location> checkpoints2 = new ArrayList<Location>();
+			for (int i = 0; i < startLineStrArr.length; i++) {
+				String world = startLineStrArr[i].split(":")[0];
+				int x = Integer.valueOf(startLineStrArr[i].split(":")[1]);
+				int y = Integer.valueOf(startLineStrArr[i].split(":")[2]);
+				int z = Integer.valueOf(startLineStrArr[i].split(":")[3]);
+				Location loc = new Location(Bukkit.getWorld(world), x, y, z);
+				startLine2.add(loc);
+			}
+			for (int i = 0; i < finishLineStrArr.length; i++) {
+				String world = finishLineStrArr[i].split(":")[0];
+				int x = Integer.valueOf(finishLineStrArr[i].split(":")[1]);
+				int y = Integer.valueOf(finishLineStrArr[i].split(":")[2]);
+				int z = Integer.valueOf(finishLineStrArr[i].split(":")[3]);
+				Location loc = new Location(Bukkit.getWorld(world), x, y, z);
+				finishLine2.add(loc);
+			}
+			for (int i = 0; i < checkpointsStrArr.length; i++) {
+				String world = checkpointsStrArr[i].split(":")[0];
+				int x = Integer.valueOf(checkpointsStrArr[i].split(":")[1]);
+				int y = Integer.valueOf(checkpointsStrArr[i].split(":")[2]);
+				int z = Integer.valueOf(checkpointsStrArr[i].split(":")[3]);
+				Location loc = new Location(Bukkit.getWorld(world), x, y, z);
+				checkpoints2.add(loc);
+			}
+			this.setStartLine(startLine2);
+			this.setFinishLine(finishLine2);
+			this.setCheckpoints(checkpoints2);
+			fis.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
-	public Location[] getStartLine() {
+	public static Track loadTrack(File f) {
+
+		Properties props = new Properties();
+
+		try {
+			FileInputStream fis = new FileInputStream(f);
+			props.load(fis);
+			String trackName = props.getProperty("trackName");
+			String startLineStr = props.getProperty("startLine");
+			String finishLineStr = props.getProperty("finishLine");
+			String checkpointsStr = props.getProperty("checkpointss");
+			String[] startLineStrArr = startLineStr.split("|");
+			String[] finishLineStrArr = finishLineStr.split("|");
+			String[] checkpointsStrArr = checkpointsStr.split("|");
+			ArrayList<Location> startLine2 = new ArrayList<Location>();
+			ArrayList<Location> finishLine2 = new ArrayList<Location>();
+			ArrayList<Location> checkpoints2 = new ArrayList<Location>();
+			for (int i = 0; i < startLineStrArr.length; i++) {
+				String world = startLineStrArr[i].split(":")[0];
+				int x = Integer.valueOf(startLineStrArr[i].split(":")[1]);
+				int y = Integer.valueOf(startLineStrArr[i].split(":")[2]);
+				int z = Integer.valueOf(startLineStrArr[i].split(":")[3]);
+				Location loc = new Location(Bukkit.getWorld(world), x, y, z);
+				startLine2.add(loc);
+			}
+			for (int i = 0; i < finishLineStrArr.length; i++) {
+				String world = finishLineStrArr[i].split(":")[0];
+				int x = Integer.valueOf(finishLineStrArr[i].split(":")[1]);
+				int y = Integer.valueOf(finishLineStrArr[i].split(":")[2]);
+				int z = Integer.valueOf(finishLineStrArr[i].split(":")[3]);
+				Location loc = new Location(Bukkit.getWorld(world), x, y, z);
+				finishLine2.add(loc);
+			}
+			for (int i = 0; i < checkpointsStrArr.length; i++) {
+				String world = checkpointsStrArr[i].split(":")[0];
+				int x = Integer.valueOf(checkpointsStrArr[i].split(":")[1]);
+				int y = Integer.valueOf(checkpointsStrArr[i].split(":")[2]);
+				int z = Integer.valueOf(checkpointsStrArr[i].split(":")[3]);
+				Location loc = new Location(Bukkit.getWorld(world), x, y, z);
+				checkpoints2.add(loc);
+			}
+			fis.close();
+			return new Track(trackName, startLine2, finishLine2, checkpoints2);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+
+	}
+
+	public ArrayList<Location> getStartLine() {
 		return startLine;
 	}
 
-	public void setStartLine(Location[] startLine) {
+	public void setStartLine(ArrayList<Location> startLine) {
 		this.startLine = startLine;
 	}
 
-	public Location[] getFinishLine() {
+	public ArrayList<Location> getFinishLine() {
 		return finishLine;
 	}
 
-	public void setFinishLine(Location[] finishLine) {
+	public void setFinishLine(ArrayList<Location> finishLine) {
 		this.finishLine = finishLine;
 	}
 
-	public Location[] getCheckpoints() {
+	public ArrayList<Location> getCheckpoints() {
 		return checkpoints;
 	}
 
-	public void setCheckpoints(Location[] checkpoints) {
+	public void setCheckpoints(ArrayList<Location> checkpoints) {
 		this.checkpoints = checkpoints;
 	}
 

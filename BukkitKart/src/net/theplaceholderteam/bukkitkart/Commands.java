@@ -2,6 +2,7 @@ package net.theplaceholderteam.bukkitkart;
 
 import net.theplaceholderteam.bukkitkart.structure.ConfigManager;
 import net.theplaceholderteam.bukkitkart.structure.QueueManager;
+import net.theplaceholderteam.bukkitkart.trackbuilder.BuildManager;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -14,11 +15,13 @@ public class Commands implements Listener {
 	BukkitKart main;
 	ConfigManager cfgManager;
 	QueueManager qManager;
+	BuildManager buildManager;
 
 	public Commands(BukkitKart main) {
 		this.main = main;
 		cfgManager = main.getCfgManager();
 		qManager = main.getQManager();
+		buildManager= main.getBuildManager();
 		main.getServer().getPluginManager().registerEvents(this, main);
 	}
 
@@ -45,6 +48,7 @@ public class Commands implements Listener {
 				}
 				if (cmdType.equalsIgnoreCase("build")) {
 					// Toggles build mode for a certain track, requires two arguments
+					
 				}
 			} else {
 				helpCommand(p);
