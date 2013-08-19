@@ -3,6 +3,7 @@ package net.theplaceholderteam.bukkitkart;
 import java.io.File;
 import java.util.logging.Logger;
 
+import net.theplaceholderteam.bukkitkart.kart.KartManager;
 import net.theplaceholderteam.bukkitkart.structure.ConfigManager;
 import net.theplaceholderteam.bukkitkart.structure.QueueManager;
 import net.theplaceholderteam.bukkitkart.trackbuilder.BuildManager;
@@ -21,6 +22,8 @@ public class BukkitKart extends JavaPlugin {
 	ConfigManager cfgManager;
 	QueueManager qManager;
 	BuildManager buildManager;
+	
+	KartManager kartManager;
 
 	Commands cmds;
 
@@ -37,6 +40,7 @@ public class BukkitKart extends JavaPlugin {
 		// Register listeners and cmdExecutors
 		cmds = new Commands(this);
 		getCommand("bukkitkart").setExecutor(cmds);
+		kartManager = new KartManager(this);
 
 		// Perform setup tasks
 		cfgManager.checkConfig();

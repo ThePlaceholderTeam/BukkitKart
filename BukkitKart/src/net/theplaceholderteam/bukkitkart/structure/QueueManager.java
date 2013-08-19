@@ -26,6 +26,11 @@ public class QueueManager {
 		this.main = main;
 	}
 	
+	// THIS IS A BAD METHOD, DO NOT USE UNLESS FOR TESTING
+	public void addPlayerToGame(Player p) {
+		playerList.add(p.getName());
+	}
+	
 	// Reset everything for the next game
 	public void resetVars() {
 		timeElapsed = 0;
